@@ -1,4 +1,5 @@
 function [dirstr] = ChangeDirectory(animal_id,sess_date,sess_num)
+% [dirstr] = ChangeDirectory(animal_id,sess_date,sess_num)
 
 if(~exist('sess_num'))
     sess_num = 1;
