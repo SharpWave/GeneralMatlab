@@ -1,7 +1,7 @@
 function [dirstr] = ChangeDirectory(animal_id,sess_date,sess_num)
 % [dirstr] = ChangeDirectory(animal_id,sess_date,sess_num)
 
-if(~exist('sess_num'))
+if(~exist('sess_num','var'))
     sess_num = 1;
 end
 
@@ -18,7 +18,7 @@ NumEntries = length(MD);
 
 for i = 1:NumEntries
 
-    if (strcmp(MD(i).Date,sess_date) & (MD(i).Session == sess_num) & strcmp(MD(i).Animal,animal_id))
+    if (strcmp(MD(i).Date,sess_date) && (MD(i).Session == sess_num) && strcmp(MD(i).Animal,animal_id))
         cd(MD(i).Location);
         dirstr = (MD(i).Location);
         return;
