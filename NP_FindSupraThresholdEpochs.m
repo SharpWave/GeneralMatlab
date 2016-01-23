@@ -12,12 +12,13 @@ NumEpochs = 0;
 ThreshEpochs = [];
 
 for i = 1:length(x)
+    % Detect Epoch end
   if((OverInThresh(i) == 0) && (InEpoch == 1))
      ThreshEpochs(NumEpochs,2) = i-1;
      InEpoch = 0;
      continue;
-   end
-
+  end
+    % Detect Epoch start
   if((OverInThresh(i) == 1) && (InEpoch == 0))
     % New Epoch
     NumEpochs = NumEpochs + 1;
@@ -27,6 +28,7 @@ for i = 1:length(x)
   end
 end
 
+% Edge case if still in epoch at the end of x
 if(OverInThresh(end) == 1)
     ThreshEpochs(NumEpochs,2) = length(x);
 end
