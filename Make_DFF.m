@@ -17,10 +17,15 @@ avgframe = avgframe./NumFrames;
 
 % make DFF
 display('calculating and saving DFF');
+p = ProgressBar(NumFrames);
 for i = 1:NumFrames
     [frame,Xdim,Ydim,NumFrames] = loadframe(moviefile,i); 
     newframe = (single(frame)-avgframe)./avgframe;
     h5write(outfile,'/Object',newframe,[1 1 i 1],[XDim YDim 1 1]);
+    p.progress;
+end
+p.stop;
+
 end
 
 
