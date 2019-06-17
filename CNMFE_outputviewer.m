@@ -10,8 +10,22 @@ load(datafile);
 [datafile,datapath] = uigetfile('*.tiff','Pick the .tiff movie file');
 mov = importdata(datafile);
 
-Xdim = size(mov,1);
-Ydim = size(mov,2);
+movinfo = imfinfo(datafile);
+NumFrames = length(movinfo);
+Ydim = movinfo(1).Width;
+Xdim = movinfo(1).Height;
+
+% calculate maximum projection
+maxproj = inf(Xdim,Ydim)*-1;
+for i = 1:NumFrames
+    temp = double(imread(datafile,i));
+    maxproj = max(maxproj,temp);
+end
+
+figure(1);
+imagesc(maxproj);colormap gray;hold on;
+
+keyboard;
 
 % plot all of the ROIs
 
@@ -20,8 +34,8 @@ NumSamples = size(C,2);
 
 
 ROIcube = reshape(full(A),[Xdim Ydim NumNeurons]);
-figure(1);
-imagesc(sum(ROIcube,3));
+
+%imagesc(sum(ROIcube,3));
 hold on;
 
 for i = 1:NumNeurons
