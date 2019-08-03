@@ -1,6 +1,6 @@
-function [] = ImportCineCSV()
+function [CineData] = ImportCineCSV(filename)
 %UNTITLED Summary of this function goes here
-filename = 'E:\Linear Track Processed Data\Marble29\6-12\6-12-2019-Marble29.csv';
+
 delimiter = ',';
 startRow = 2;
 formatSpec = '%f%f%f%f%f%[^\n\r]';
@@ -20,7 +20,7 @@ fclose(fileID);
 %% Create output variable
 CineData = table(dataArray{1:end-1}, 'VariableNames', {'Frame','time','X','Y','MotionMeasure'});
 
-X = 
+
 
 
 end

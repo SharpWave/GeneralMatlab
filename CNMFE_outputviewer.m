@@ -17,7 +17,8 @@ Xdim = movinfo(1).Height;
 
 % calculate maximum projection
 maxproj = inf(Xdim,Ydim)*-1;
-for i = 1:NumFrames
+for i = 1:10:NumFrames
+    i/NumFrames,
     temp = double(imread(datafile,i));
     maxproj = max(maxproj,temp);
 end
@@ -25,7 +26,7 @@ end
 figure(1);
 imagesc(maxproj);colormap gray;hold on;
 
-keyboard;
+%keyboard;
 
 % plot all of the ROIs
 
