@@ -5,48 +5,64 @@ if (nargin < 3)
     omitends = 1;
 end
 
-OverInThresh = (x > InThresh);
-InEpoch = 0;
+DatLen = length(x);
+
+OverInThresh = find(x > InThresh);
+OverLen = length(OverInThresh);
+
+Epochs = [];
+
+if(isempty(OverInThresh))
+    return;
+end
+
+curr = 1;
 NumEpochs = 0;
 
-ThreshEpochs = [];
-
-for i = 1:length(x)
-    % Detect Epoch end
-  if((OverInThresh(i) == 0) && (InEpoch == 1))
-     ThreshEpochs(NumEpochs,2) = i-1;
-     InEpoch = 0;
-     continue;
+while(curr <= OverLen)
+  CurrStart = OverInThresh(curr);
+  CurrEnd = OverInThresh(curr);
+  while ((curr < OverLen) && (OverInThresh(curr+1) == OverInThresh(curr)+1))
+      curr = curr+1;
+      CurrEnd = OverInThresh(curr);
   end
-    % Detect Epoch start
-  if((OverInThresh(i) == 1) && (InEpoch == 0))
-    % New Epoch
-    NumEpochs = NumEpochs + 1;
-    ThreshEpochs(NumEpochs,1) = i;
-    InEpoch = 1;
-    continue;
-  end
+  NumEpochs = NumEpochs+1;
+  Epochs(NumEpochs,1) = CurrStart;
+  Epochs(NumEpochs,2) = CurrEnd;
+  curr = curr+1; 
 end
 
-% Edge case if still in epoch at the end of x
-if(OverInThresh(end) == 1)
-    ThreshEpochs(NumEpochs,2) = length(x);
-end
-
-if (omitends == 1)
-    if (OverInThresh(end) == 1)
-      %Still in an epoch at the end, omit it
-      NumEpochs = NumEpochs - 1;
-      ThreshEpochs = ThreshEpochs(1:NumEpochs,:);
+if (omitends)
+    % kill a bad first
+    if (Epochs(1,1) == 1)
+        if (NumEpochs > 1)
+          Epochs = Epochs(2:end,:);
+        else
+          Epochs = []
+        end
     end
-
-    if (OverInThresh(1) == 1)
-      NumEpochs = NumEpochs-1;
-      ThreshEpochs = ThreshEpochs(2:NumEpochs+1,:);
+    
+    if (isempty(Epochs))
+        return;
+    end
+        
+    if (Epochs(end,2) == DatLen)
+        if (NumEpochs > 1)
+          Epochs = Epochs(1:end-1,:);
+        else
+           Epochs = [];
+        end
     end
 end
 
-Epochs = ThreshEpochs;
+        
+      
+
+
+
+
+
+
 
 
 
