@@ -38,12 +38,10 @@ if (omitends)
         if (NumEpochs > 1)
           Epochs = Epochs(2:end,:);
         else
-          Epochs = []
+          Epochs = [];
+          return;
         end
-    end
-    
-    if (isempty(Epochs))
-        return;
+        
     end
         
     if (Epochs(end,2) == DatLen)
